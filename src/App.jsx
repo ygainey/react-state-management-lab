@@ -98,8 +98,16 @@ const App = () => {
     }
   }
 
-  const handleRemoveFighter = (index) =>{
-    setTeam(team.splice(index, index))
+  const handleRemoveFighter = (index, fighter) =>{    
+    const teamCopy = team.toSpliced(index, 1)
+    setTeam(teamCopy)
+    setMoney(money + fighter.price)
+    setTotalStrength(teamCopy.reduce((acc, fighter) => {
+      return acc + fighter.strength
+    },0))
+    setTotalAgility(teamCopy.reduce((acc, fighter) =>{
+      return acc + fighter.agility
+    },0))
   }
 
 
@@ -109,8 +117,7 @@ const App = () => {
       <h2>Money: {money}</h2>
       <h2>Team Strength: {totalStrength}</h2>
       <h2>Team Agility: {totalAgility}</h2>
-      <h2>Team: </h2>
-      <h2>Fighters:</h2>
+      <h2>Team: </h2>      
       <div className='team'>
         {team.map((fighter, index) =>{
           return(          
@@ -120,11 +127,13 @@ const App = () => {
               <li>Price: {fighter.price}</li>
               <li>Strength: {fighter.strength}</li>
               <li>Agility: {fighter.agility}</li>
-              <button onClick={() => handleRemoveFighter(index)}>Delete</button>
+              <button onClick={() => handleRemoveFighter(index, fighter)}>Delete</button>
+              {console.log(team)}
             </ul>            
           )
         })}
       </div>
+      <h2>Fighters:</h2>
       <div className='zombieFighters'>
         {zombieFighters.map((fighter, index) =>{
           return (
